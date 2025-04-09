@@ -2,9 +2,23 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('build') {
+            agent {
+                docker {
+                    image 'node:20-alpine'
+                    reuseNode true
+                }
+            }
             steps {
-                echo 'Hello World'
+                sh '''
+                    echo 'jenkins va installer les dépendances'
+                    ls -al
+                    npm i
+                    echo 'jenkins va lancer le build'
+                    npm run build
+                    echo 'fin'
+                    ls -al
+                '''
             }
         }
     }
